@@ -1,0 +1,8 @@
+source 'https://rubygems.org'
+gem 'bundler'
+gem 'sinatra'
+gem 'rack-test'
+gem 'capybara'
+gem 'haml'
+gem 'thin'
+gem 'shotgun'
