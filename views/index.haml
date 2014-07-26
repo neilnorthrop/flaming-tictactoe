@@ -1,0 +1,13 @@
+.h1 Tic Tac Toe 
+%p
+.board1= "[#{settings.game.board[0]}, #{settings.game.board[1]}, #{settings.game.board[2]}]"
+
+.board2= "[#{settings.game.board[3]}, #{settings.game.board[4]}, #{settings.game.board[5]}]"
+
+.board3= "[#{settings.game.board[6]}, #{settings.game.board[7]}, #{settings.game.board[8]}]"
+
+%p
+	%form{:action => "/index", :method => "post"}
+		%input{:type => "text", :name => "message"}
+		%input{:type => "submit"}
+
