@@ -8,6 +8,25 @@
 
 %p
 	%form{:action => "/index", :method => "post"}
-		%input{:type => "text", :name => "message"}
-		%input{:type => "submit"}
+		%input{:type => "text", :name => "message", :placeholder => "Type A Number Here"}
+		%input{:type => "submit", :id => "pick", :value => "Click to Pick"}
+	%a{:href => "/", :name => "Click to Play Again", :id => "play_again", :style => "display:none"}
+		Click to Play Again
 
+%p
+	- case settings.game.check_game
+	- when 'player'
+		"PLAYER WON!"
+		:javascript
+			disableButton();
+			resetLink();
+	- when 'computer'
+		"COMPUTER WON!"
+		:javascript
+			disableButton();
+			resetLink();
+	- when 'draw'
+		"IT'S A DRAW!"
+		:javascript
+			disableButton();
+			resetLink();

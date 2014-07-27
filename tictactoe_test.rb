@@ -3,11 +3,12 @@ ENV['RACK_ENV'] = 'test'
 require './tictactoe'
 require 'capybara'
 require 'capybara/dsl'
-require 'test/unit'
+require 'minitest/autorun'
 require 'rack/test'
-puts `clear`
+require 'pp'
+print `clear`
 
-class GameTest < Test::Unit::TestCase
+class GameTest < Minitest::Test
 	include Rack::Test::Methods
 
 	def app
@@ -29,7 +30,7 @@ class GameTest < Test::Unit::TestCase
 	# end
 end
 
-class HelloWorldTest < Test::Unit::TestCase
+class TictactoeTest < Minitest::Test
 	include Capybara::DSL
 	# Capybara.default_driver = :selenium # <-- use Selenium driver
 
@@ -41,4 +42,91 @@ class HelloWorldTest < Test::Unit::TestCase
 		visit '/'
 		assert page.has_content?('Tic Tac Toe')
 	end
+
+	def test_posting_to_index
+		visit '/'
+		fill_in('message', :with => 1)
+		click_button('pick')
+		assert page.has_content?("X")
+		assert page.has_content?("O")
+	end
+
+	def test_reposting_to_index
+		visit '/'
+		fill_in('message', :with => 1)
+		click_button('pick')
+		assert page.has_content?("X")
+		assert page.has_content?("O")
+
+		fill_in('message', :with => 2)
+		click_button('pick')
+		assert page.has_content?("X")
+		assert page.has_content?("O")
+	end
+
+	def test_computer_winner
+		visit '/'
+		fill_in('message', :with => 1)
+		click_button('pick')
+		fill_in('message', :with => 2)
+		click_button('pick')
+		fill_in('message', :with => 3)
+		click_button('pick')
+
+		assert page.has_content?('COMPUTER'), "#{body}"
+		assert find_button('pick').disabled?, "#{find_button('pick')}"
+	end
+
+	def test_draw
+		visit '/'
+		fill_in('message', :with => 1)
+		click_button('pick')
+		fill_in('message', :with => 2)
+		click_button('pick')
+		fill_in('message', :with => 7)
+		click_button('pick')
+		fill_in('message', :with => 6)
+		click_button('pick')
+		fill_in('message', :with => 8)
+		click_button('pick')
+
+		assert page.has_content?('DRAW'), "#{body}"
+		assert find_button('pick').disabled?, "#{find_button('pick')}"
+	end
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

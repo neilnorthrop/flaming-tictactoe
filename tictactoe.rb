@@ -14,10 +14,8 @@ end
 
 post '/index' do
 	settings.game.set_position(params[:message].to_i, "X")
+	settings.game.check_game
 	settings.computer_ai.computer_turn(settings.game)
+	settings.game.check_game
 	haml :index
-end
-
-get '/looking' do
-	"Looking for a page"
 end
