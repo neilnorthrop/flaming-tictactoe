@@ -1,0 +1,6 @@
+%h3 Pick who you want to go first:
+
+%form{ :action => "/decide", :method => "post" }
+	%input{ :type => "radio", :name => "message", :value => "computer" }Computer
+	%input{ :type => "radio", :name => "message", :value => "player" }Player
+	%input{ :type => "submit", :value => "Submit" }

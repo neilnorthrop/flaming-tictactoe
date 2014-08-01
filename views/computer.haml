@@ -5,10 +5,8 @@
 
 .board3= "[#{settings.game.board[6]}, #{settings.game.board[7]}, #{settings.game.board[8]}]"
 
-
-
 %p
-	%form{:action => "/index", :method => "post"}
+	%form{:action => "/computer", :method => "post"}
 		%input{:type => "text", :name => "message", :placeholder => "Type A Number Here"}
 		%input{:type => "submit", :id => "pick", :value => "Click to Pick"}
 	%a{:href => "/", :name => "Click to Play Again", :id => "play_again", :style => "display:none"}
