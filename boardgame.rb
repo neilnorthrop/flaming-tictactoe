@@ -25,28 +25,28 @@ class BoardGame
   end
 
   def check_game
-    players_moves = player_moves
-    computers_moves = computer_moves
     winning_positions.each do |row|
-      5.times do
-        first_three = players_moves.take(3)
-        if row == first_three.sort
-          return "player"
-        else
-          players_moves = players_moves.rotate
-        end
-      end
-      5.times do
-        first_three = computers_moves.take(3)
-        if row == first_three.sort
-          return "computer"
-        else
-          computers_moves = computers_moves.rotate
-        end
-      end
+      return :player if (row - player_moves).empty?
+      return :computer if (row - computer_moves).empty?
     end
-    if tally_moves_remaining.empty?
-      return "draw"
+    return :draw if tally_moves_remaining.empty?
+    return :nobody
+  end
+  
+  def game_over?
+    check_game != :nobody
+  end
+  
+  def game_over_message
+    case check_game
+    when :player
+      "PLAYER WON!"
+    when :computer
+      "COMPUTER WON!"
+    when :draw
+      "IT'S A DRAW!"
+    when :nobody
+      "GAME ISN'T OVER DUDE!"
     end
   end
 
@@ -62,11 +62,7 @@ class BoardGame
   end
 
   def check_position(position, letter)
-    if board.find_index(position) == nil
-      false
-    else
-      true
-    end
+    board.find_index(position) != nil
   end
 
   def move_does_not_contain(index, letter)
@@ -75,11 +71,7 @@ class BoardGame
 
   def moves(letter)
     moves = []
-    board.each.with_index do |v,k|
-      if v == letter
-        moves << k
-      end
-    end
+    board.each.with_index { |v,k| moves << k if v == letter }
     return moves.sort
   end
 
@@ -95,10 +87,6 @@ class BoardGame
 
   def position_empty(index, letter1, letter2)
     move_does_not_contain(index, letter1) && move_does_not_contain(index, letter2)
-  end
-
-  def reset_board
-    @board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
   end
 end
 
@@ -135,7 +123,7 @@ if __FILE__==$0
       @test_game.set_position(5, "O")
       @test_game.set_position(6, "O")
       @test_game.set_position(7, "O")
-      assert_equal "draw", @test_game.check_game
+      assert_equal :draw, @test_game.check_game
     end
 
     def test_player_wins_with_full_game_board
@@ -148,7 +136,7 @@ if __FILE__==$0
       @test_game.set_position(3, "O")
       @test_game.set_position(4, "O")
       @test_game.set_position(5, "O")
-      assert_equal "player", @test_game.check_game
+      assert_equal :player, @test_game.check_game
     end
 
     def test_computer_wins_with_full_game_board
@@ -159,7 +147,7 @@ if __FILE__==$0
       @test_game.set_position(3, "O")
       @test_game.set_position(6, "O")
       @test_game.set_position(9, "O")
-      assert_equal "computer", @test_game.check_game
+      assert_equal :computer, @test_game.check_game
     end
 
     def test_building_default_board_size
@@ -219,6 +207,10 @@ if __FILE__==$0
     def test_that_position_does_contain_an_X
       @test_game.set_position(1, "X")
       assert_equal false, @test_game.move_does_not_contain(0, "X")
+    end
+    
+    def test_that_game_over_message_returns_default_message
+      assert "GAME ISN'T OVER DUDE!", @test_game.game_over_message
     end
   end
 end

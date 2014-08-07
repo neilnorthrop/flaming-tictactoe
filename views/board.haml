@@ -1,0 +1,11 @@
+.board
+  - settings.game.display_board.each do |cell|
+    %form{:action => "/turn", :method => "post"}
+      %input{:type => "hidden", :name => "player_move", :value => "#{cell}"}
+      %input.cell{:type => "submit", :value => "#{cell}" }
+    
+- if settings.game.game_over?
+  %h3= "#{settings.game.game_over_message}"
+  %a{:href => "/"} Click to play again!
+  :javascript
+    disableButton();

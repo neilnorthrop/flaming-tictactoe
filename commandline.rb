@@ -54,15 +54,8 @@ def player_turn
 end
 
 def game_win
-  case @game.check_game
-  when "player"
-    puts "PLAYER WINS!"
-    enter_game
-  when "computer"
-    puts "COMPUTER WINS!"
-    enter_game
-  when "draw"
-    puts "IT IS A DRAW!"
+  if @game.game_over?
+    puts @game.game_over_message
     enter_game
   end
 end
