@@ -1,4 +1,5 @@
 #! /usr/bin/env ruby
+require 'pp'
 
 class BoardGame
   attr_accessor :board
@@ -13,7 +14,7 @@ class BoardGame
   end
   
   def set_position(position, letter)
-    if valid_position(position)
+    if valid_position(position) && check_position(position, letter)
       index = @board.find_index(position)
       @board[index] = letter
     else 
@@ -23,6 +24,11 @@ class BoardGame
   
   def valid_position(position)
     @immutable_board.include?(position)
+  end
+  
+  def check_position(position, letter)
+    index = @immutable_board.find_index(position)
+    @board[index] !~ /X|O/
   end
 end
 
@@ -74,6 +80,19 @@ if __FILE__==$0
     def test_that_board_sets_X_at_position_2
       @test_game.set_position(2, "X")
       assert_equal [1, "X", 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], @test_game.display
+    end
+    
+    def test_that_board_responds_to_checks_position
+      assert @test_game.check_position(1, "X")
+    end
+    
+    def test_that_board_checks_position
+      assert @test_game.check_position(2, "X")
+    end
+    
+    def test_that_board_refuses_move_on_another_move
+      @test_game.set_position(1, "X")
+      assert_equal false, @test_game.set_position(1, "X")
     end
   end
 end
