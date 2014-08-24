@@ -1,77 +1,134 @@
 #! /usr/bin/env ruby
+require 'pp'
 require './boardgame.rb'
+require './boardgame4x4.rb'
 require './computer_ai.rb'
 
 def enter_game
-  puts "Do you want to play a game? Please type 'yes' or 'no'"
-  answer = gets.chomp.downcase
-  puts
+  board_size
+  get_opponent
+  assign_board_instance
+  game_loop
+end
 
-  case answer
-  when 'yes'
-    puts "okay, lets play\n\n" + "*" * 30 + "\n\nYou'll start first and be the letter 'x'\n\n" + "*" * 30 + "\n\n"
-    @game = BoardGame.new
-    game_loop
-  when 'no'
-    print `clear`
-    puts "too bad dude/dudette\n\n"
-    exit
+def board_size
+  print `clear` + <<-EOF
+What size of board do you want to play?
+1 - 3x3
+2 - 4x4
+EOF
+  gets.chomp.to_i
+  if $_ !~ /1|2/
+    board_size
   else
-    puts "you need to pick 'yes' or 'no'\n\n"
-    enter_game
+    @boardsize = $_.to_i
   end
 end
 
-def display(board)
-  print "[#{board[0]}, #{board[1]}, #{board[2]}]\n[#{board[3]}, #{board[4]}, #{board[5]}]\n[#{board[6]}, #{board[7]}, #{board[8]}]\n"
+def get_opponent
+  print `clear` + <<-EOF
+Do you want to play a computer or player?
+1 - Computer
+2 - Player
+EOF
+  gets.chomp.to_i
+  if $_ !~ /1|2/
+    get_opponent
+  else
+    @opponent = $_.to_i
+  end
 end
 
-def player_turn
-  print `clear`
-  puts "Please pick the number to where you want to play:\n"
+def assign_board_instance
+  if @boardsize == 1
+    @game = BoardGame.new
+    @boardsize = 3
+  elsif @boardsize == 2
+    @game = BoardGame4x4.new
+    @boardsize = 4
+  end
+end
 
-  display(@game.display_board)
+def game_loop
+  player_one_turn
+  
+  check_for_win
+  
+  if @opponent == 1
+    ComputerAI.computer_turn(@game)
+  elsif @opponent == 2
+    player_two_turn
+  end
+  
+  check_for_win
+  
+  game_loop
+end
 
+def player_one_turn
+  print `clear` + <<-EOF
+Player One, please pick a place to play:
+EOF
+  display(@game)
   gets.chomp
-
   player_position = if $_ =~ /\d/
-                      if $_.to_i < 10
-                        $_.to_i
-                      else
-                        puts "* " * 15 + "Please pick a number 1-9" + " *" * 15
-                        player_turn
-                      end
+                      $_.to_i
                     else
-                      puts "* " * 15 + "Please pick a number 1-9" + " *" * 15
-                      player_turn
+                      player_one_turn
                     end
 
   if @game.set_position(player_position, "X") == nil
-    player_turn
+    player_one_turn
   else
     @game.set_position(player_position, "X")
   end
 end
 
-def game_win
-  if @game.game_over?
-    puts @game.game_over_message
-    enter_game
+def player_two_turn
+  print `clear` + <<-EOF
+Player Two, please pick a place to play:
+EOF
+  display(@game)
+  gets.chomp
+  player_position = if $_ =~ /\d/
+                      $_.to_i
+                    else
+                      player_two_turn
+                    end
+
+  if @game.set_position(player_position, "O") == nil
+    player_two_turn
+  else
+    @game.set_position(player_position, "O")
   end
 end
 
-def game_loop
-  print `clear`
-  player_turn
-  game_win
+def check_for_win
+  if @game.game_over?
+    puts @game.game_over_message
+    play_again?
+  end
+end
 
-  ComputerAI.computer_turn(@game)
-  game_win
+def play_again?
+  print <<-EOF
+Do you want to play again?
+1 - Yes
+2 - No  
+EOF
+  answer = gets.chomp
+  if answer.to_i == 1
+    enter_game
+  else
+    puts "Too baddie..."
+    exit
+  end
+end
 
-  game_loop
+def display(game)
+  game.display_board.map {|num| "%2s" % num }.each_slice(game.board_dimension) { |row| print row, "\n" }
 end
 
 enter_game
 
 __END__
-

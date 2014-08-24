@@ -1,9 +1,10 @@
 #! /usr/bin/env ruby
 
 class BoardGame
-  attr_accessor :board, :winning_positions
+  attr_accessor :board, :board_dimension, :winning_positions
 
   def initialize
+    @board_dimension = 3
     @board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     @winning_positions = [[0, 1, 2],[3, 4, 5],[6, 7, 8],[0, 3, 6],[1, 4, 7],[2, 5, 8],[0, 4, 8],[2, 4, 6]]
   end
@@ -85,8 +86,8 @@ class BoardGame
     return moves_remaining
   end
 
-  def position_empty(index, letter1, letter2)
-    move_does_not_contain(index, letter1) && move_does_not_contain(index, letter2)
+  def position_empty(index)
+    move_does_not_contain(index, "X") && move_does_not_contain(index, "O")
   end
 end
 

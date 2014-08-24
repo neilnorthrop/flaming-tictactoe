@@ -37,13 +37,13 @@ class ComputerAI
     @winning_positions.each do |row|
       if (row - computer_moves).count == 1 && @turn_taken == false
         move_remaining = (row - computer_moves).shift
-        if @game.position_empty(move_remaining, "O", "X")
+        if @game.position_empty(move_remaining)
           @game.set_at_index(move_remaining, "O")
           @turn_taken = true
         end
       elsif (row - player_moves).count == 1 && @turn_taken == false
         move_remaining = (row - player_moves).shift
-        if @game.position_empty(move_remaining, "O", "X")
+        if @game.position_empty(move_remaining)
           @game.set_at_index(move_remaining, "O")
           @turn_taken = true
         end
