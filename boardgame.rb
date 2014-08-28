@@ -1,4 +1,5 @@
 #! /usr/bin/env ruby
+require 'pp'
 
 class BoardGame
   attr_accessor :board, :board_dimension, :winning_positions
@@ -6,15 +7,23 @@ class BoardGame
   def initialize
     @board_dimension = 3
     @board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-    @winning_positions = [[0, 1, 2],[3, 4, 5],[6, 7, 8],[0, 3, 6],[1, 4, 7],[2, 5, 8],[0, 4, 8],[2, 4, 6]]
+    @winning_positions = [[1, 2, 3],[4, 5, 6],[7, 8, 9],[1, 4, 7],[2, 5, 8],[3, 6, 9],[1, 5, 9],[3, 5, 7]]
   end
 
   def set_position(position, letter)
-    if check_position(position, letter) == false
-      return nil
-    else
-      set_at_index(board.find_index(position), letter)
+    if valid_position(position) && position_empty(position)
+      @board[find_index(position)] = letter
+    else 
+      false 
     end
+  end
+
+  def valid_position(position)
+    position > 0 && position <= @board.size
+  end
+
+  def find_index(position)
+    position - 1
   end
 
   def player_moves
@@ -72,7 +81,7 @@ class BoardGame
 
   def moves(letter)
     moves = []
-    board.each.with_index { |v,k| moves << k if v == letter }
+    board.each.with_index { |v,k| moves << k + 1 if v == letter }
     return moves.sort
   end
 
@@ -86,8 +95,8 @@ class BoardGame
     return moves_remaining
   end
 
-  def position_empty(index)
-    move_does_not_contain(index, "X") && move_does_not_contain(index, "O")
+  def position_empty(position)
+    @board[find_index(position)] != "X" && @board[find_index(position)] != "O"
   end
 end
 
@@ -129,13 +138,13 @@ if __FILE__==$0
 
     def test_player_wins_with_full_game_board
       @test_game.set_position(1, "X")
-      @test_game.set_position(6, "X")
+      @test_game.set_position(6, "O")
       @test_game.set_position(7, "X")
       @test_game.set_position(8, "X")
       @test_game.set_position(9, "X")
       @test_game.set_position(2, "O")
       @test_game.set_position(3, "O")
-      @test_game.set_position(4, "O")
+      @test_game.set_position(4, "X")
       @test_game.set_position(5, "O")
       assert_equal :player, @test_game.check_game
     end
@@ -146,7 +155,9 @@ if __FILE__==$0
       @test_game.set_position(5, "X")
       @test_game.set_position(7, "X")
       @test_game.set_position(3, "O")
+      @test_game.set_position(4, "O")
       @test_game.set_position(6, "O")
+      @test_game.set_position(8, "O")
       @test_game.set_position(9, "O")
       assert_equal :computer, @test_game.check_game
     end
@@ -173,7 +184,7 @@ if __FILE__==$0
 
     def test_setting_a_position_ontop_of_another_position
       @test_game.set_position(2,"X")
-      assert_equal nil, @test_game.set_position(2,"X")
+      assert_equal false, @test_game.set_position(2,"X")
     end
 
     def test_that_board_responds_to_display
@@ -213,6 +224,49 @@ if __FILE__==$0
     def test_that_game_over_message_returns_default_message
       assert "GAME ISN'T OVER DUDE!", @test_game.game_over_message
     end
+    
+      # FIX ME NOWWWWWWW!!!!!!!!!!
+      # def test_player_wins_three_in_a_row_across
+      #   @board.set_position(1, "X")
+      #   @board.set_position(2, "X")
+      #   @board.set_position(3, "X")
+      #   assert_equal :player, @board.check_game
+      # end
+      # 
+      # def test_player_wins_three_in_a_row_down
+      #   @board.set_position(1, "X")
+      #   @board.set_position(4, "X")
+      #   @board.set_position(7, "X")
+      #   assert_equal :player, @board.check_game
+      # end
+      # 
+      # def test_player_wins_three_in_a_row_diagonal
+      #   @board.set_position(1, "X")
+      #   @board.set_position(5, "X")
+      #   @board.set_position(9, "X")
+      #   assert_equal :player, @board.check_game
+      # end
+      # 
+      # def test_computer_wins_three_in_a_row_across
+      #   @board.set_position(1, "O")
+      #   @board.set_position(2, "O")
+      #   @board.set_position(3, "O")
+      #   assert_equal :computer, @board.check_game
+      # end
+      # 
+      # def test_computer_wins_three_in_a_row_down
+      #   @board.set_position(1, "O")
+      #   @board.set_position(4, "O")
+      #   @board.set_position(7, "O")
+      #   assert_equal :computer, @board.check_game
+      # end
+      # 
+      # def test_computer_wins_three_in_a_row_diagonal
+      #   @board.set_position(1, "O")
+      #   @board.set_position(5, "O")
+      #   @board.set_position(9, "O")
+      #   assert_equal :computer, @board.check_game
+      # end
   end
 end
 

@@ -76,8 +76,8 @@ EOF
                     else
                       player_one_turn
                     end
-
-  if @game.set_position(player_position, "X") == nil
+  
+  if @game.set_position(player_position, "X") == false
     player_one_turn
   else
     @game.set_position(player_position, "X")
@@ -96,7 +96,7 @@ EOF
                       player_two_turn
                     end
 
-  if @game.set_position(player_position, "O") == nil
+  if @game.set_position(player_position, "O") == false
     player_two_turn
   else
     @game.set_position(player_position, "O")
