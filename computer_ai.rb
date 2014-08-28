@@ -22,9 +22,8 @@ class ComputerAI
   end
 
   def next_win_or_block(board, moves)
-    results = board.winning_positions.map { |row| row - moves }
-    potentials = results.select { |row| row.count == 1 }
-    matches = potentials.flatten.select { |position| board.position_empty(position) }
+    results = board.winning_positions.select { |row| (row - moves).count == 1 }
+    matches = results.flatten.select { |position| board.position_empty(position) }
     matches.shift || :none
   end
 

@@ -6,7 +6,7 @@ require './computer_ai.rb'
 
 set :game, BoardGame.new
 set :board, ""
-set :computer_ai, ComputerAI
+set :computer_ai, ComputerAI.new
 
 get '/' do
 	haml :game
@@ -20,7 +20,7 @@ post '/decide' do
     settings.game = BoardGame.new
     settings.board = ""
   end
-	settings.computer_ai.computer_turn(settings.game)	if params[:first_turn] == 'Computer'
+	settings.game.set_position(settings.computer_ai.get_move(settings.game, "O", "X"), "O")	if params[:first_turn] == 'Computer'
 	redirect '/board'
 end
 
@@ -30,6 +30,6 @@ end
 
 post '/turn' do
 	settings.game.set_position(params[:player_move].to_i, "X")
-	settings.computer_ai.computer_turn(settings.game)
+	settings.game.set_position(settings.computer_ai.get_move(settings.game, "O", "X"), "O")
 	redirect '/board'
 end
