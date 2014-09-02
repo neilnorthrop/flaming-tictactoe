@@ -1,7 +1,7 @@
 #! /usr/bin/env ruby
 require 'pp'
 
-class BoardGame4x4
+class Board4x4
   attr_accessor :board, :board_dimension, :winning_positions
   
   def initialize
@@ -93,11 +93,11 @@ if __FILE__==$0
   class TestBoard4x4 < MiniTest::Unit::TestCase
 
     def setup
-      @test_game = BoardGame4x4.new
+      @test_game = Board4x4.new
     end
     
     def test_that_boardgame_constructs
-      assert BoardGame4x4.new
+      assert Board4x4.new
     end
     
     def test_that_boardgame_constructs_4x4_grid

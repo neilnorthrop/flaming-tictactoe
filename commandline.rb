@@ -1,7 +1,7 @@
 #! /usr/bin/env ruby
 require 'pp'
-require './boardgame.rb'
-require './boardgame4x4.rb'
+require './board.rb'
+require './board4x4.rb'
 require './computer_ai.rb'
 
 def enter_game
@@ -41,10 +41,10 @@ end
 
 def assign_board_instance
   if @boardsize == 1
-    @game = BoardGame.new
+    @game = Board.new
     @boardsize = 3
   elsif @boardsize == 2
-    @game = BoardGame4x4.new
+    @game = Board4x4.new
     @boardsize = 4
   end
 end
