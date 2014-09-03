@@ -7,12 +7,12 @@ class ComputerAI
 		opponent_moves = board.moves(opponent)
 
 		if opponent_moves.count == 1
-	    opening_move(opponent_moves)
+	    self.opening_move(opponent_moves)
 	  else
-	    move = next_win_or_block(board, my_moves)
-	    move = next_win_or_block(board, opponent_moves) if move == :none
-	    move = blocking_fork(board, opponent_moves) if move == :none
-	    move = board.tally_moves_remaining.sample if move == :none
+	    move = self.next_win_or_block(board, my_moves)
+	    move = self.next_win_or_block(board, opponent_moves) if move == :none
+	    move = self.blocking_fork(board, opponent_moves) if move == :none
+	    move = self.board.tally_moves_remaining.sample if move == :none
 	    return move
 	  end
 	end
@@ -46,13 +46,12 @@ end
 if __FILE__==$0
   require 'minitest/autorun'
   require 'minitest/unit'
-  require './boardgame.rb'
+  require './board.rb'
   print `clear`
 
   class TestComputerAI < MiniTest::Unit::TestCase
   	def setup
-  		@board = BoardGame.new
-  		@brain = ComputerAI.new
+  		@board = Board.new
   		@me = "O"
   		@opponent = "X"
   	end
@@ -63,7 +62,7 @@ if __FILE__==$0
       @board.set_position(2, "X")
       @board.set_position(3, "X")
       @board.set_position(6, "X")
-      assert_equal 7, @brain.get_move(@board, @me, @opponent)
+      assert_equal 7, ComputerAI.new.get_move(@board, @me, @opponent)
     end
 
     def test_computer_turn_takes_the_win_across
@@ -72,7 +71,7 @@ if __FILE__==$0
       @board.set_position(4, "X")
       @board.set_position(7, "X")
       @board.set_position(6, "X")
-      assert_equal 3, @brain.get_move(@board, @me, @opponent)
+      assert_equal 3, ComputerAI.new.get_move(@board, @me, @opponent)
     end
 
     def test_computer_turn_takes_the_win_diagonal
@@ -81,7 +80,7 @@ if __FILE__==$0
       @board.set_position(3, "O")
       @board.set_position(5, "O")
       @board.set_position(6, "X")
-      assert_equal 7, @brain.get_move(@board, @me, @opponent)
+      assert_equal 7, ComputerAI.new.get_move(@board, @me, @opponent)
     end
 
     def test_computer_turn_blocks_players_fork
@@ -90,35 +89,35 @@ if __FILE__==$0
       @board.set_position(4, "X")
       @board.set_position(5, "O")
       @board.set_position(6, "O")
-      assert_equal 3, @brain.get_move(@board, @me, @opponent)
+      assert_equal 3, ComputerAI.new.get_move(@board, @me, @opponent)
     end
 
     def test_computer_turn_blocks_players_positioning_for_a_top_left_fork
       @board.set_position(2, "X")
       @board.set_position(4, "X")
       @board.set_position(5, "O")
-      assert_equal 1, @brain.get_move(@board, @me, @opponent)
+      assert_equal 1, ComputerAI.new.get_move(@board, @me, @opponent)
     end
 
     def test_computer_turn_blocks_players_positioning_for_a_top_right_fork
       @board.set_position(2, "X")
       @board.set_position(6, "X")
       @board.set_position(5, "O")
-      assert_equal 3, @brain.get_move(@board, @me, @opponent)
+      assert_equal 3, ComputerAI.new.get_move(@board, @me, @opponent)
     end
 
     def test_computer_turn_blocks_players_positioning_for_a_bottom_left_fork
       @board.set_position(4, "X")
       @board.set_position(8, "X")
       @board.set_position(5, "O")
-      assert_equal 7, @brain.get_move(@board, @me, @opponent)
+      assert_equal 7, ComputerAI.new.get_move(@board, @me, @opponent)
     end
 
     def test_computer_turn_blocks_players_positioning_for_a_bottom_right_fork
       @board.set_position(6, "X")
       @board.set_position(8, "X")
       @board.set_position(5, "O")
-      assert_equal 3, @brain.get_move(@board, @me, @opponent)
+      assert_equal 3, ComputerAI.new.get_move(@board, @me, @opponent)
     end
 
     def test_edge_case_for_computer_block
@@ -127,19 +126,19 @@ if __FILE__==$0
       @board.set_position(7, "X")
       @board.set_position(3, "O")
       @board.set_position(5, "O")
-      assert_equal 4, @brain.get_move(@board, @me, @opponent)
+      assert_equal 4, ComputerAI.new.get_move(@board, @me, @opponent)
     end
 
     def test_computer_turn_blocks_player_across
       @board.set_position(1, "X")
       @board.set_position(2, "X")
-      assert_equal 3, @brain.get_move(@board, @me, @opponent)
+      assert_equal 3, ComputerAI.new.get_move(@board, @me, @opponent)
     end
 
     def test_computer_turn_blocks_player_down
       @board.set_position(1, "X")
       @board.set_position(4, "X")
-      assert_equal 7, @brain.get_move(@board, @me, @opponent)
+      assert_equal 7, ComputerAI.new.get_move(@board, @me, @opponent)
     end
 
     def test_computer_turn_blocks_player_down_the_middle
@@ -148,23 +147,23 @@ if __FILE__==$0
       @board.set_position(3, "O")
       @board.set_position(5, "X")
       @board.set_position(7, "X")
-      assert_equal 8, @brain.get_move(@board, @me, @opponent)
+      assert_equal 8, ComputerAI.new.get_move(@board, @me, @opponent)
     end
 
     def test_computer_turn_blocks_player_diagonal
       @board.set_position(5, "X")
       @board.set_position(1, "X")
-      assert_equal 9, @brain.get_move(@board, @me, @opponent)
+      assert_equal 9, ComputerAI.new.get_move(@board, @me, @opponent)
     end
 
     def test_on_opening_computer_turn_takes_middle_if_open
       @board.set_position(1, "X")
-      assert_equal 5, @brain.get_move(@board, @me, @opponent)
+      assert_equal 5, ComputerAI.new.get_move(@board, @me, @opponent)
     end
 
     def test_on_opening_computer_turn_takes_middle_outter_if_open
       @board.set_position(5, "X")
-      assert_equal 1, @brain.get_move(@board, @me, @opponent)
+      assert_equal 1, ComputerAI.new.get_move(@board, @me, @opponent)
     end
   end
 

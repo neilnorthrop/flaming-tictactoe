@@ -35,6 +35,7 @@ EOF
   if $_ !~ /1|2/
     get_opponent
   else
+    @computer = ComputerAI.new
     @opponent = $_.to_i
   end
 end
@@ -55,7 +56,7 @@ def game_loop
   check_for_win
   
   if @opponent == 1
-    ComputerAI.computer_turn(@game)
+    @game.set_position(@computer.get_move(@game, "O", "X"), "O")
   elsif @opponent == 2
     player_two_turn
   end
