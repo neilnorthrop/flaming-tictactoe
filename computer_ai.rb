@@ -1,33 +1,33 @@
 #! /usr/bin/env ruby
 
 class ComputerAI
-	def get_move(board, me, opponent)
+	def self.get_move(board, me, opponent)
 		board = board
 		my_moves = board.moves(me)
 		opponent_moves = board.moves(opponent)
 
 		if opponent_moves.count == 1
-	    self.opening_move(opponent_moves)
+	    opening_move(opponent_moves)
 	  else
-	    move = self.next_win_or_block(board, my_moves)
-	    move = self.next_win_or_block(board, opponent_moves) if move == :none
-	    move = self.blocking_fork(board, opponent_moves) if move == :none
-	    move = self.board.tally_moves_remaining.sample if move == :none
+	    move = next_win_or_block(board, my_moves)
+	    move = next_win_or_block(board, opponent_moves) if move == :none
+	    move = blocking_fork(board, opponent_moves) if move == :none
+	    move = board.tally_moves_remaining.sample if move == :none
 	    return move
 	  end
 	end
 
-  def opening_move(opponent_moves)
+  def self.opening_move(opponent_moves)
     !opponent_moves.include?(5) ? 5 : 1
   end
 
-  def next_win_or_block(board, moves)
+  def self.next_win_or_block(board, moves)
     results = board.winning_positions.select { |row| (row - moves).count == 1 }
     matches = results.flatten.select { |position| board.position_empty(position) }
     matches.shift || :none
   end
 
-  def blocking_fork(board, opponent_moves)
+  def self.blocking_fork(board, opponent_moves)
     blockings = {
       [[1, 3, 6, 8]] => board.tally_moves_remaining.sample,
       [[1, 6, 7]] => 4,

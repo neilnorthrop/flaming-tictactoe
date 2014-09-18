@@ -14,10 +14,10 @@ end
 
 post '/decide' do
   if params[:board] == "4x4"
-    settings.game = BoardGame4x4.new
+    settings.game = Board4x4.new
     settings.board = "4x4"
   else
-    settings.game = BoardGame.new
+    settings.game = Board.new
     settings.board = ""
   end
 	settings.game.set_position(settings.computer_ai.get_move(settings.game, "O", "X"), "O")	if params[:first_turn] == 'Computer'

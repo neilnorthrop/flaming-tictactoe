@@ -8,19 +8,29 @@ class Player
     @mover = mover
   end
   
-  def get_move(board, player_one_moves, player_two_moves)
-    @mover.get_move(board, player_one_moves, player_two_moves)
+  def get_move
+    @mover.get_move
   end
 end
 
 class ConsoleMover
-  def get_move(board, player_one_moves, player_two_moves)
+  def initialize(input)
+    @input = input
+  end
+  
+  def get_move
+    @input.gets.chomp.to_i
   end
 end
 
 class ComputerMover
-  def get_move(board, player_one_moves, player_two_moves)
-    ComputerAI.new.get_move(board, player_one_moves, player_two_moves)
+  def initialize(board, opponent)
+    @board = board
+    @opponent = opponent
+  end
+  
+  def get_move
+    ComputerAI.get_move(@board, @letter, @opponent)
   end
 end
 
@@ -31,41 +41,75 @@ if __FILE__==$0
   require './computer_ai.rb'
   print `clear`
   
-  class TestPlayer < MiniTest::Unit::TestCase
+  class TestConsoleMover < MiniTest::Unit::TestCase
     def setup
-      @player = Player.new(ConsoleMover.new)
-    end
-    
-    def test_player_creation
-      assert @player
-    end
-    
-    def test_player_responds_to_letter
-      assert_respond_to @player, :letter
-    end
-    
-    def test_player_responds_to_mover
-      assert_respond_to @player, :mover
-    end
-
-    def test_console_mover_responds_to_method_get_move
-      assert_respond_to @player, :get_move
-    end
-    
-    def test_computer_mover_responds_to_method_get_move
-      @player.mover = ComputerMover.new
-      assert_respond_to @player, :get_move
-    end
-    
-    def test_computer_mover_gives_move
-      @player.mover = ComputerMover.new
       @board = Board.new
-      @board.set_position(1, "O")
-      @board.set_position(4, "O")
-      @board.set_position(2, "X")
-      @board.set_position(3, "X")
-      @board.set_position(6, "X")
-      assert_equal 7, @player.get_move(@board, "O", "X")
     end
+    
+    class StubIn
+      attr_reader :input
+
+      def initialize(input)
+        @input = input
+      end
+
+      def gets
+        @input.shift
+      end
+    end
+    
+    def test_that_listen_gets_integers_from_input
+      stubin = StubIn.new(["4.3", "asdf", "5", "6\n", "092834\t"])
+      console = ConsoleMover.new(stubin)
+      assert_equal console.get_move, 4
+      assert_equal console.get_move, 0
+      assert_equal console.get_move, 5
+      assert_equal console.get_move, 6
+      assert_equal console.get_move, 92834
+    end
+    
+    # def test_that_say_passed_a_message_to_puts
+    #   stubout = StubOut.new
+    #   console = ConsoleMover.new(nil, stubout)
+    #   console.say("Hello")
+    #   assert_equal stubout.output, "Hello"
+    # end
+    # 
+    # def test_that_get_move_keeps_asking_for_a_valid_move
+    #   stubin = StubIn.new(["asdf", " ", "-1", "3"])
+    #   stubout = StubOut.new
+    #   console = ConsoleMover.new(stubin, stubout)
+    #   assert_equal console.get_move(@board, "X", "O"), 3
+    # end
+    # 
+    # def test_that_get_move_keeps_asking_until_an_empty_position_is_given
+    #   @board.set_position 1, "X"
+    #   stubin = StubIn.new(["1", "2"])
+    #   stubout = StubOut.new
+    #   console = ConsoleMover.new(stubin, stubout)
+    #   assert_equal console.get_move(@board, "X", "O"), 2
+    # end
   end
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
