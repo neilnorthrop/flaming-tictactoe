@@ -2,10 +2,11 @@
 require './computer_ai.rb'
 
 class Player
-  attr_accessor :letter, :mover
+  attr_accessor :mover, :letter
   
-  def initialize(mover)
+  def initialize(mover, letter)
     @mover = mover
+    @letter = letter
   end
   
   def get_move
