@@ -1,32 +1,48 @@
 #! /usr/bin/env ruby
 
 class Game
-  attr_accessor :board, :player_one, :player_two, :current_player
+  attr_accessor :board, :player_one, :player_two, :current_player, :player_collection
   
   def initialize(board, player_one, player_two)
     @board = board
     @player_one = player_one
     @player_two = player_two
-    @current_player = current_player
+    @current_player = @player_one
+    @player_collection = [@player_one, @player_two]
   end
   
   def game_loop
-    while true do
-      set(@current_player.get_move, @current_player.letter)
+    while game_over do
+      display_board
+      set(current_player.get_move, current_player.letter)
       check_for_win
+      toggle_players
     end
   end
   
   def check_for_win
-    @board.game_over_message if @board.game_over?
+    @board.game_over_message and exit if @board.game_over?
+  end
+  
+  def game_over
+    !@board.game_over?
   end
   
   def set(position, letter)
     @board.set_position(position, letter)
   end
   
-  def current_player
-    [@player_one, @player_two].cycle { |current_player| return current_player }
+  def toggle_players
+    @current_player = (@player_collection - [@current_player]).shift
+  end
+  
+  def display_board
+    print `clear`
+    board.display_board.map {|num| "%2s" % num }.each_slice(board.board_dimension) { |row| print row, "\n" }
+  end
+  
+  def play_again?
+    
   end
 end
 
@@ -68,3 +84,20 @@ if __FILE__==$0
     # end
   end
 end
+
+__END__
+
+
+load "player.rb"
+load "game.rb"
+load "board.rb"
+load "board4x4.rb"
+load "computer_ai.rb"
+
+player_one_letter = "X"
+player_two_letter = "O"
+
+board = Board.new
+player_one = Player.new(ConsoleMover.new($stdin), player_one_letter)
+player_two = Player.new(ComputerMover.new(board, player_one.letter), player_two_letter)
+game = Game.new(board, player_one, player_two)
