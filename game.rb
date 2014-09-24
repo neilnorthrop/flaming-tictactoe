@@ -12,8 +12,9 @@ class Game
   end
   
   def game_loop
-    while game_over do
+    while !@board.game_over? do
       display_board
+      puts current_player.inspect
       set(current_player.get_move, current_player.letter)
       check_for_win
       toggle_players
@@ -21,11 +22,7 @@ class Game
   end
   
   def check_for_win
-    @board.game_over_message and exit if @board.game_over?
-  end
-  
-  def game_over
-    !@board.game_over?
+    puts @board.game_over_message and exit if @board.game_over?
   end
   
   def set(position, letter)
@@ -39,10 +36,6 @@ class Game
   def display_board
     print `clear`
     board.display_board.map {|num| "%2s" % num }.each_slice(board.board_dimension) { |row| print row, "\n" }
-  end
-  
-  def play_again?
-    
   end
 end
 

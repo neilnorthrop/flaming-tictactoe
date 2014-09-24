@@ -36,15 +36,13 @@ Do you want to play a computer or player?
 1 - Computer
 2 - Player
 EOF
-  gets.chomp.to_i
-  if $_ !~ /1|2/
-    get_opponent
+  response = gets.chomp.to_i
+  if response == 1
+    @player_two = Player.new(ComputerMover.new(@board, @player_one.letter), "O")
+  elsif response == 2
+    @player_two = Player.new(ConsoleMover.new($stdin), "O");
   else
-    if $_ == 1
-      @player_two = Player.new(ComputerMover.new(@board, @player_one), "O")
-    else
-      @player_two = Player.new(ConsoleMover.new($stdin), "O")
-    end
+    setup_players
   end
 end
 
@@ -53,8 +51,8 @@ def build_game
 end
 
 def game_loop
-  display(@game.board)
   @game.game_loop
+  play_again?
 end
 
 def play_again?
@@ -70,10 +68,6 @@ EOF
     puts "Too baddie..."
     exit
   end
-end
-
-def display(board)
-  board.display_board.map {|num| "%2s" % num }.each_slice(board.board_dimension) { |row| print row, "\n" }
 end
 
 enter_game
