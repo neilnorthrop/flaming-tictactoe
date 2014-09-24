@@ -47,7 +47,7 @@ EOF
 end
 
 def build_game
-  @game = Game.new(@board, @player_one, @player_two)
+  @game = Game.new(@board, @player_one, @player_two, ConsoleOutput.new)
 end
 
 def game_loop
