@@ -35,6 +35,12 @@ class ComputerMover
   end
 end
 
+class WebMover
+  def get_move
+    params[:player_move]
+  end
+end
+
 if __FILE__==$0
   require 'minitest/autorun'
   require 'minitest/unit'

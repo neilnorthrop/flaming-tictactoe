@@ -3,7 +3,7 @@
 class Game
   attr_accessor :board, :player_one, :player_two, :current_player, :player_collection, :output
   
-  def initialize(board, player_one, player_two, output)
+  def initialize(board, player_one, player_two)
     @board = board
     @player_one = player_one
     @player_two = player_two
@@ -41,6 +41,12 @@ class ConsoleOutput
   end
 end
 
+class WebOutput
+  def display(board)
+    board.display_board
+  end
+end
+
 if __FILE__==$0
   require 'minitest/autorun'
   require 'minitest/unit'
@@ -53,7 +59,7 @@ if __FILE__==$0
     def setup
       @board = Board.new
       @player_one = Player.new(ConsoleMover.new($stdin), "X")
-      @game = Game.new(@board, @player_one, Player.new(ComputerMover.new(@board, @player_one), "O"))
+      @game = Game.new(@board, @player_one, Player.new(ComputerMover.new(@board, @player_one), "O"), ConsoleOutput.new)
     end
     
     # def test_that_say_passed_a_message_to_puts

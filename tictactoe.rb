@@ -1,26 +1,26 @@
 require 'sinatra'
 require 'haml'
-require './boardgame.rb'
-require './boardgame4x4.rb'
+require './game.rb'
+require './player.rb'
+require './board.rb'
+require './board4x4.rb'
 require './computer_ai.rb'
-
-set :game, BoardGame.new
-set :board, ""
-set :computer_ai, ComputerAI.new
+enable :sessions
 
 get '/' do
 	haml :game
 end
 
 post '/decide' do
+	session['player_one'] = Player.new(WebMover.new, "X")
   if params[:board] == "4x4"
-    settings.game = Board4x4.new
-    settings.board = "4x4"
+    session['board'] = Board4x4.new
   else
-    settings.game = Board.new
-    settings.board = ""
+    session['board'] = Board.new
   end
-	settings.game.set_position(settings.computer_ai.get_move(settings.game, "O", "X"), "O")	if params[:first_turn] == 'Computer'
+	session['player_two'] = Player.new(ComputerMover.new(session['board'], session['player_one'].letter), "O") if params[:opponent] == 'Computer'
+	session['player_two'] = Player.new(WebMover.new, "O") if params[:opponent] == 'Player'
+	session['game'] = Game.new(session['board'], session['player_one'], session['player_two'])
 	redirect '/board'
 end
 
@@ -29,7 +29,8 @@ get '/board' do
 end
 
 post '/turn' do
-	settings.game.set_position(params[:player_move].to_i, "X")
-	settings.game.set_position(settings.computer_ai.get_move(settings.game, "O", "X"), "O")
+	session['game'].set(params[:player_move].to_i, session['player_one'].letter)
+	redirect '/board' if session['board'].game_over?
+	session['game'].set(session['player_two'].get_move, session['player_two'].letter)
 	redirect '/board'
 end

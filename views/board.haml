@@ -1,18 +1,18 @@
-- if settings.board == "4x4"
+- if session['board'].board_dimension == 4
   .board4x4
-    - settings.game.display_board.each do |cell|
+    - session['board'].display_board.each do |cell|
       %form{:action => "/turn", :method => "post"}
         %input{:type => "hidden", :name => "player_move", :value => "#{cell}"}
         %input.cell{:type => "submit", :value => "#{cell}" }
 - else
   .board
-    - settings.game.display_board.each do |cell|
+    - session['board'].display_board.each do |cell|
       %form{:action => "/turn", :method => "post"}
         %input{:type => "hidden", :name => "player_move", :value => "#{cell}"}
         %input.cell{:type => "submit", :value => "#{cell}" }
     
-- if settings.game.game_over?
-  %h3= "#{settings.game.game_over_message}"
+- if session['board'].game_over?
+  %h3= "#{session['board'].game_over_message}"
   %a{:href => "/"} Click to play again!
   :javascript
     disableButton();
