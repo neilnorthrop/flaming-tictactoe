@@ -31,13 +31,12 @@ class ComputerMover
   end
   
   def get_move
-    ComputerAI.get_move(@board, @letter, @opponent)
+    ComputerAI.get_move(@board, "O", @opponent)
   end
 end
 
 class WebMover
   def get_move
-    params[:player_move]
   end
 end
 

@@ -47,12 +47,20 @@ EOF
 end
 
 def build_game
-  @game = Game.new(@board, @player_one, @player_two, ConsoleOutput.new)
+  @game = Game.new(@board, @player_one, @player_two)
 end
 
 def game_loop
-  @game.game_loop
-  play_again?
+  display(@game.board)
+  @game.next_move
+  check_for_win(@game.board)
+  @game.toggle_players
+  game_loop
+end
+
+def check_for_win(board)
+  puts board.game_over_message if board.game_over?
+  play_again? if board.game_over?
 end
 
 def play_again?
@@ -68,6 +76,11 @@ EOF
     puts "Too baddie..."
     exit
   end
+end
+
+def display(board)
+  print `clear`
+  board.board.map {|num| "%2s" % num }.each_slice(board.board_dimension) { |row| print row, "\n" }
 end
 
 enter_game

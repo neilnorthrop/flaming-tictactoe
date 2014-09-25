@@ -5,7 +5,14 @@ require './player.rb'
 require './board.rb'
 require './board4x4.rb'
 require './computer_ai.rb'
+require 'pp'
+
+def player_one
+	session["player_one"]
+end
+
 enable :sessions
+set :session_secret, 'So0perSeKr3t!'
 
 get '/' do
 	haml :game
@@ -26,11 +33,19 @@ end
 
 get '/board' do
 	haml :board
+	# display the board
 end
 
 post '/turn' do
+	# @game.next_move
+	# @game.toggle_players
+	# game.next_move params
 	session['game'].set(params[:player_move].to_i, session['player_one'].letter)
 	redirect '/board' if session['board'].game_over?
 	session['game'].set(session['player_two'].get_move, session['player_two'].letter)
 	redirect '/board'
+end
+
+not_found do
+	halt 404, 'page not found!'
 end

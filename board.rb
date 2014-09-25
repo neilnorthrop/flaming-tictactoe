@@ -61,10 +61,6 @@ class Board
     end
   end
 
-  def display_board
-    return board
-  end
-
   def set_at_index(index, letter)
     if board[index] =~ /X|O/
       return false
@@ -117,11 +113,11 @@ if __FILE__==$0
     end
 
     def test_game_class_responds_to_board
-      assert @board.display_board
+      assert @board.board
     end
 
     def test_game_includes_default_size_board
-      assert_equal [1, 2, 3, 4, 5, 6, 7, 8, 9], @board.display_board
+      assert_equal [1, 2, 3, 4, 5, 6, 7, 8, 9], @board.board
     end
 
     def test_game_is_a_draw
@@ -204,7 +200,7 @@ if __FILE__==$0
 
     def test_setting_an_X_index_position
       @board.set_at_index(1, "X")
-      assert_equal [1, "X", 3, 4, 5, 6, 7, 8, 9], @board.display_board
+      assert_equal [1, "X", 3, 4, 5, 6, 7, 8, 9], @board.board
     end
 
     def test_setting_X_index_position_on_top_of_another_X

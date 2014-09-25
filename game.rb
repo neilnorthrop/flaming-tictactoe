@@ -1,7 +1,7 @@
 #! /usr/bin/env ruby
 
 class Game
-  attr_accessor :board, :player_one, :player_two, :current_player, :player_collection, :output
+  attr_reader :board
   
   def initialize(board, player_one, player_two)
     @board = board
@@ -9,35 +9,14 @@ class Game
     @player_two = player_two
     @current_player = @player_one
     @player_collection = [@player_one, @player_two]
-    @output = output
   end
-  
-  def game_loop
-    while !@board.game_over? do
-      output.display(board)
-      set(current_player.get_move, current_player.letter)
-      output.check_for_win(board)
-      toggle_players
-    end
-  end
-  
-  def set(position, letter)
-    @board.set_position(position, letter)
+
+  def next_move
+    @board.set_position(@current_player.get_move, @current_player.letter)
   end
   
   def toggle_players
     @current_player = (@player_collection - [@current_player]).shift
-  end
-end
-
-class ConsoleOutput
-  def check_for_win(board)
-    puts board.game_over_message and exit if board.game_over?
-  end
-  
-  def display(board)
-    print `clear`
-    board.display_board.map {|num| "%2s" % num }.each_slice(board.board_dimension) { |row| print row, "\n" }
   end
 end
 
