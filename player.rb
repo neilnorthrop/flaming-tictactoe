@@ -9,34 +9,49 @@ class Player
     @letter = letter
   end
   
-  def get_move
-    @mover.get_move
+  def get_move(args)
+    @mover.get_move(args)
   end
 end
 
-class ConsoleMover
+class Mover
+  def get_move(args)
+    raise 'MAKE A METHOD!'
+  end
+
+  def requires_interaction?
+    true
+  end
+end
+
+class ConsoleMover < Mover
   def initialize(input)
     @input = input
   end
   
-  def get_move
+  def get_move(args)
     @input.gets.chomp.to_i
   end
 end
 
-class ComputerMover
+class ComputerMover < Mover
   def initialize(board, opponent)
     @board = board
     @opponent = opponent
   end
   
-  def get_move
+  def get_move(args)
     ComputerAI.get_move(@board, "O", @opponent)
+  end
+
+  def requires_interaction?
+    false
   end
 end
 
-class WebMover
-  def get_move
+class WebMover < Mover
+  def get_move(args)
+    args[:player_move].to_i
   end
 end
 

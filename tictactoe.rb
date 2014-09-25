@@ -11,6 +11,15 @@ def player_one
 	session["player_one"]
 end
 
+def game
+	session['game']
+end
+
+def next_move_and_toggle(params)
+	game.next_move(params)
+	game.toggle_players
+end
+
 enable :sessions
 set :session_secret, 'So0perSeKr3t!'
 
@@ -33,16 +42,13 @@ end
 
 get '/board' do
 	haml :board
-	# display the board
 end
 
 post '/turn' do
-	# @game.next_move
-	# @game.toggle_players
-	# game.next_move params
-	session['game'].set(params[:player_move].to_i, session['player_one'].letter)
+	next_move_and_toggle(params)
 	redirect '/board' if session['board'].game_over?
-	session['game'].set(session['player_two'].get_move, session['player_two'].letter)
+	redirect '/board' if game.current_player.mover.requires_interaction?
+	next_move_and_toggle(params)
 	redirect '/board'
 end
 

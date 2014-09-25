@@ -1,12 +1,12 @@
 - if session['board'].board_dimension == 4
   .board4x4
-    - session['board'].display_board.each do |cell|
+    - session['board'].board.each do |cell|
       %form{:action => "/turn", :method => "post"}
         %input{:type => "hidden", :name => "player_move", :value => "#{cell}"}
         %input.cell{:type => "submit", :value => "#{cell}" }
 - else
   .board
-    - session['board'].display_board.each do |cell|
+    - session['board'].board.each do |cell|
       %form{:action => "/turn", :method => "post"}
         %input{:type => "hidden", :name => "player_move", :value => "#{cell}"}
         %input.cell{:type => "submit", :value => "#{cell}" }
@@ -16,5 +16,3 @@
   %a{:href => "/"} Click to play again!
   :javascript
     disableButton();
-
-= pp params
