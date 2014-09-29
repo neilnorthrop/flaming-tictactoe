@@ -1,5 +1,5 @@
 #! /usr/bin/env ruby
-require './computer_ai.rb'
+require_relative 'computer_ai'
 
 class Player
   attr_accessor :mover, :letter
@@ -29,7 +29,7 @@ class ConsoleMover < Mover
     @input = input
   end
   
-  def get_move(args)
+  def get_move(args={})
     @input.gets.chomp.to_i
   end
 end
@@ -58,8 +58,8 @@ end
 if __FILE__==$0
   require 'minitest/autorun'
   require 'minitest/unit'
-  require './board.rb'
-  require './computer_ai.rb'
+  require_relative 'board'
+  require_relative 'computer_ai'
   print `clear`
   
   class TestConsoleMover < MiniTest::Unit::TestCase
