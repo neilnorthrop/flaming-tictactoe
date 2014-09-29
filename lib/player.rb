@@ -9,7 +9,7 @@ class Player
     @letter = letter
   end
   
-  def get_move(args)
+  def get_move(args={})
     @mover.get_move(args)
   end
 end
@@ -40,7 +40,7 @@ class ComputerMover < Mover
     @opponent = opponent
   end
   
-  def get_move(args)
+  def get_move(args={})
     ComputerAI.get_move(@board, "O", @opponent)
   end
 
@@ -50,7 +50,7 @@ class ComputerMover < Mover
 end
 
 class WebMover < Mover
-  def get_move(args)
+  def get_move(args={})
     args[:player_move].to_i
   end
 end

@@ -1,10 +1,10 @@
 #! /usr/bin/env ruby
 require 'pp'
-require './player.rb'
-require './game.rb'
-require './board.rb'
-require './board4x4.rb'
-require './computer_ai.rb'
+require './lib/player.rb'
+require './lib/game.rb'
+require './lib/board.rb'
+require './lib/board4x4.rb'
+require './lib/computer_ai.rb'
 
 def enter_game
   board_size
@@ -52,7 +52,7 @@ end
 
 def game_loop
   display(@game.board)
-  @game.next_move
+  @game.next_move(@board)
   check_for_win(@game.board)
   @game.toggle_players
   game_loop
