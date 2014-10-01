@@ -2,9 +2,8 @@ require './lib/computer_ai'
 require 'minitest/autorun'
 require 'minitest/unit'
 require './lib/board.rb'
-print `clear`
 
-class TestComputerAI < MiniTest::Unit::TestCase
+class TestComputerAI < Minitest::Test
 	def setup
 		@board = Board.new
 		@me = "O"

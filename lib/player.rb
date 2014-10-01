@@ -62,7 +62,7 @@ if __FILE__==$0
   require_relative 'computer_ai'
   print `clear`
   
-  class TestConsoleMover < MiniTest::Unit::TestCase
+  class TestConsoleMover < Minitest::Test
     def setup
       @board = Board.new
     end

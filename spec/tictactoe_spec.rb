@@ -7,7 +7,6 @@ require 'capybara/dsl'
 require 'rspec'
 require 'rack/test'
 require 'pp'
-print `clear`
 
 def capy_app
 	Capybara.app = Sinatra::Application.new

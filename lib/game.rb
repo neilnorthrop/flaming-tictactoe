@@ -33,7 +33,7 @@ if __FILE__==$0
   require './player.rb'
   print `clear`
   
-  class TestGame < MiniTest::Unit::TestCase
+  class TestGame < Minitest::Test
     
     def setup
       @board = Board.new
@@ -66,18 +66,3 @@ if __FILE__==$0
 end
 
 __END__
-
-
-load "player.rb"
-load "game.rb"
-load "board.rb"
-load "board4x4.rb"
-load "computer_ai.rb"
-
-player_one_letter = "X"
-player_two_letter = "O"
-
-board = Board.new
-player_one = Player.new(ConsoleMover.new($stdin), player_one_letter)
-player_two = Player.new(ComputerMover.new(board, player_one.letter), player_two_letter)
-game = Game.new(board, player_one, player_two)

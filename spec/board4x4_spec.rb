@@ -1,9 +1,8 @@
 require './lib/board4x4'
 require 'minitest/autorun'
 require 'minitest/unit'
-print `clear`
 
-class TestBoard4x4 < MiniTest::Unit::TestCase
+class TestBoard4x4 < Minitest::Test
 
   def setup
     @test_game = Board4x4.new

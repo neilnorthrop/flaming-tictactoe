@@ -3,9 +3,8 @@ ENV['RACK_ENV'] = 'test'
 require './lib/board.rb'
 require 'minitest/autorun'
 require 'minitest/unit'
-print `clear`
 
-class TestBoard < MiniTest::Unit::TestCase
+class TestBoard < Minitest::Test
 
   def setup
     @board = Board.new
