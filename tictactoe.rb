@@ -17,7 +17,7 @@ end
 post '/decide' do
 	player_one = Player.new(WebMover.new, "X")
 	which_board(params[:board])
-	player_two = which_opponent(params[:opponent])
+	player_two = which_opponent(params[:opponent], player_one)
 	build_game(player_one, player_two)
 	redirect '/board'
 end
@@ -55,7 +55,7 @@ def which_board(size)
 	size == "4x4" ? (session['board'] = Board4x4.new) : (session['board'] = Board.new)
 end
 
-def which_opponent(player)
+def which_opponent(player, player_one)
 	player == 'Computer' ? Player.new(ComputerMover.new(session['board'], player_one.letter), "O") : Player.new(WebMover.new, "O")
 end
 
