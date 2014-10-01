@@ -9,11 +9,6 @@ require 'rack/test'
 require 'pp'
 print `clear`
 
-def get_app
-	get '/'
-	expect(last_response).to be_ok
-end
-
 def capy_app
 	Capybara.app = Sinatra::Application.new
 end
@@ -23,10 +18,10 @@ RSpec.describe "when visiting the website" do
 		Sinatra::Application
 	end
 
-	it "shows 'Pick your opponent' on the homepage" do
-		get_app
-
-		expect(last_response.body).to include('Pick your opponent:')
+	it "shows 'Pick your board size and opponent' on the homepage" do
+		get '/'
+		expect(last_response).to be_ok
+		expect(last_response.body).to include('Pick your board size and opponent:')
 	end
 end
 
@@ -57,6 +52,44 @@ RSpec.describe "when player one picks a cell" do
 		click_button('Computer')
 		click_button('1')
 		expect(page).to have_css('#X')
+	end
+
+	it "has computer take the next turn" do
+		visit '/'
+		choose '3x3'
+		click_button('Computer')
+		click_button('1')
+		expect(page).to have_css('#O')
+	end
+end
+
+RSpec.describe "when player one matches three in a row" do
+	capy_app
+
+	it "shows that player was the winner" do
+		visit '/'
+		choose '3x3'
+		click_button('Player')
+		click_button('1')
+		click_button('2')
+		click_button('4')
+		click_button('5')
+		click_button('7')
+		expect(page).to have_content('PLAYER WON!')
+	end
+end
+
+RSpec.describe "when computer matches three in a row" do
+	capy_app
+
+	it "shows that computer was the winner" do
+		visit '/'
+		choose '3x3'
+		click_button('Computer')
+		click_button('1')
+		click_button('2')
+		click_button('4')
+		expect(page).to have_content('COMPUTER WON!')
 	end
 end
 
