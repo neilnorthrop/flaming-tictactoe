@@ -1,21 +1,21 @@
 #! /usr/bin/env ruby
 
 class ComputerAI
-	def self.get_move(board, me, opponent)
-		board = board
-		my_moves = board.moves(me)
-		opponent_moves = board.moves(opponent)
+  def self.get_move(board, me, opponent)
+    board = board
+    my_moves = board.moves(me)
+    opponent_moves = board.moves(opponent)
 
-		if opponent_moves.count == 1
-	    opening_move(opponent_moves)
-	  else
-	    move = next_win_or_block(board, my_moves)
-	    move = next_win_or_block(board, opponent_moves) if move == :none
-	    move = blocking_fork(board, opponent_moves) if move == :none
-	    move = board.tally_moves_remaining.sample if move == :none
-	    return move
-	  end
-	end
+    if opponent_moves.count == 1
+      opening_move(opponent_moves)
+    else
+      move = next_win_or_block(board, my_moves)
+      move = next_win_or_block(board, opponent_moves) if move == :none
+      move = blocking_fork(board, opponent_moves) if move == :none
+      move = board.tally_moves_remaining.sample if move == :none
+      return move
+    end
+  end
 
   def self.opening_move(opponent_moves)
     !opponent_moves.include?(5) ? 5 : 1
