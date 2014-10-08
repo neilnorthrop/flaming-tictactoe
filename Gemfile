@@ -12,10 +12,10 @@ group :development do
 end
 
 group :test do
-	gem 'rspec'
-	gem 'capybara'
-	gem 'rack-test'
-	gem 'launchy'
-	gem 'selenium-webdriver'
-	gem 'capybara-webkit'
+  gem 'rspec'
+  gem 'capybara'
+  gem 'rack-test'
+  gem 'launchy'
+  gem 'selenium-webdriver'
+  gem 'capybara-webkit'
 end
