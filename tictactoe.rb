@@ -5,7 +5,6 @@ require './lib/player.rb'
 require './lib/board.rb'
 require './lib/board4x4.rb'
 require './lib/computer_ai.rb'
-require 'pp'
 
 enable :sessions
 set :session_secret, 'So0perSeKr3t!'

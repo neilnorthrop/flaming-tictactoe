@@ -9,6 +9,7 @@ require 'rack/test'
 require 'pp'
 
 def capy_app
+	# Capybara.javascript_driver = :webkit
 	Capybara.app = Sinatra::Application.new
 end
 
@@ -50,7 +51,7 @@ RSpec.describe "when player one picks a cell" do
 		choose '3x3'
 		click_button('Computer')
 		click_button('1')
-		expect(page).to have_css('#X')
+		expect(page).to have_css('#cellX')
 	end
 
 	it "has computer take the next turn" do
@@ -58,7 +59,7 @@ RSpec.describe "when player one picks a cell" do
 		choose '3x3'
 		click_button('Computer')
 		click_button('1')
-		expect(page).to have_css('#O')
+		expect(page).to have_css('#cellO')
 	end
 end
 
@@ -89,6 +90,20 @@ RSpec.describe "when computer matches three in a row" do
 		click_button('2')
 		click_button('4')
 		expect(page).to have_content('COMPUTER WON!')
+	end
+end
+
+RSpec.describe "when there is a winner", :js => true do
+	capy_app
+
+	it "disables the buttons" do
+		visit '/'
+		choose '3x3'
+		click_button('Computer')
+		click_button('1')
+		click_button('2')
+		click_button('4')
+		expect(page).to have_css("#cell9[disabled]")
 	end
 end
 

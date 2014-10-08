@@ -8,8 +8,8 @@
   .board
     - session['board'].board.each do |cell|
       %form{:action => "/turn", :method => "post"}
-        %input{:type => "hidden", :name => "player_move", :id => "#{cell}", :value => "#{cell}"}
-        %input.cell{:type => "submit", :value => "#{cell}" }
+        %input{:type => "hidden", :name => "player_move", :value => "#{cell}"}
+        %input.cell{:type => "submit", :id => "cell#{cell}", :value => "#{cell}" }
     
 - if session['board'].game_over?
   %h3= "#{session['board'].game_over_message}"

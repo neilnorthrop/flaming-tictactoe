@@ -1,3 +1,3 @@
 var disableButton = function(){
-	$("input[type=submit]").attr("disabled", "disabled");
+	$("input[type=submit]").attr("disabled", true);
 };

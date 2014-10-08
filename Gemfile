@@ -15,4 +15,7 @@ group :test do
 	gem 'rspec'
 	gem 'capybara'
 	gem 'rack-test'
+	gem 'launchy'
+	gem 'selenium-webdriver'
+	gem 'capybara-webkit'
 end

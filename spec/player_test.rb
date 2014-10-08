@@ -2,7 +2,6 @@ require 'minitest/autorun'
 require 'minitest/unit'
 require './lib/board'
 require './lib/computer_ai'
-print `clear`
 
 class TestConsoleMover < Minitest::Test
   def setup
