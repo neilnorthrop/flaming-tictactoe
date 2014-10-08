@@ -6,15 +6,15 @@ class Board
   def initialize
     @board_dimension = 3
     @board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-    @winning_positions = [[1, 2, 3],[4, 5, 6],[7, 8, 9],[1, 4, 7],[2, 5, 8],[3, 6, 9],[1, 5, 9],[3, 5, 7]]
+    @winning_positions = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]]
   end
 
   def set_position(position, letter)
     (valid_position(position) && position_empty(position)) ? (@board[find_index(position)] = letter) ? true : false : false
     # if valid_position(position) && position_empty(position)
     #   @board[find_index(position)] = letter
-    # else 
-    #   false 
+    # else
+    #   false
     # end
   end
 
@@ -27,11 +27,11 @@ class Board
   end
 
   def player_moves
-    moves("X")
+    moves('X')
   end
 
   def computer_moves
-    moves("O")
+    moves('O')
   end
 
   def check_game
@@ -40,19 +40,19 @@ class Board
       return :computer if (row - computer_moves).empty?
     end
     return :draw if tally_moves_remaining.empty?
-    return :nobody
+    :nobody
   end
-  
+
   def game_over?
     check_game != :nobody
   end
-  
+
   def game_over_message
     case check_game
     when :player
-      "PLAYER WON!"
+      'PLAYER WON!'
     when :computer
-      "COMPUTER WON!"
+      'COMPUTER WON!'
     when :draw
       "IT'S A DRAW!"
     when :nobody
@@ -67,8 +67,8 @@ class Board
     board[index] = letter
   end
 
-  def check_position(position, letter)
-    board.find_index(position) != nil
+  def check_position(position, _letter)
+    !board.find_index(position).nil?
   end
 
   def move_does_not_contain(index, letter)
@@ -77,21 +77,21 @@ class Board
 
   def moves(letter)
     moves = []
-    board.each.with_index { |v,k| moves << k + 1 if v == letter }
-    return moves.sort
+    board.each.with_index { |v, k| moves << k + 1 if v == letter }
+    moves.sort
   end
 
   def tally_moves_remaining
     moves_remaining = []
     @board.each do |position|
-      if position != "X" && position != "O"
+      if position != 'X' && position != 'O'
         moves_remaining << position
       end
     end
-    return moves_remaining
+    moves_remaining
   end
 
   def position_empty(position)
-    @board[find_index(position)] != "X" && @board[find_index(position)] != "O"
+    @board[find_index(position)] != 'X' && @board[find_index(position)] != 'O'
   end
 end

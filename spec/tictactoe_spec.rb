@@ -1,6 +1,6 @@
 ENV['RACK_ENV'] = 'test'
 
-require './tictactoe'
+require Dir.pwd + '/lib/tictactoe.rb'
 require 'spec_helper'
 require 'capybara'
 require 'capybara/dsl'
@@ -12,7 +12,7 @@ def capy_app
   Capybara.app = Sinatra::Application.new
 end
 
-RSpec.describe "when visiting the website" do
+RSpec.describe 'when visiting the website' do
   def app
     Sinatra::Application
   end
@@ -24,17 +24,17 @@ RSpec.describe "when visiting the website" do
   end
 end
 
-RSpec.describe "when player one picks the 3x3 or 4x4 option" do
+RSpec.describe 'when player one picks the 3x3 or 4x4 option' do
   capy_app
 
-  it "shows a 3x3 board" do
+  it 'shows a 3x3 board' do
     visit '/'
     choose '3x3'
     click_button('Computer')
     expect(page).to have_css('.board')
   end
 
-  it "shows a 4x4 board" do
+  it 'shows a 4x4 board' do
     visit '/'
     choose '4x4'
     click_button('Player')
@@ -42,10 +42,10 @@ RSpec.describe "when player one picks the 3x3 or 4x4 option" do
   end
 end
 
-RSpec.describe "when player one picks a cell" do
+RSpec.describe 'when player one picks a cell' do
   capy_app
 
-  it "posts a move to the game board" do
+  it 'posts a move to the game board' do
     visit '/'
     choose '3x3'
     click_button('Computer')
@@ -53,7 +53,7 @@ RSpec.describe "when player one picks a cell" do
     expect(page).to have_css('#cellX')
   end
 
-  it "has computer take the next turn" do
+  it 'has computer take the next turn' do
     visit '/'
     choose '3x3'
     click_button('Computer')
@@ -62,10 +62,10 @@ RSpec.describe "when player one picks a cell" do
   end
 end
 
-RSpec.describe "when player one matches three in a row" do
+RSpec.describe 'when player one matches three in a row' do
   capy_app
 
-  it "shows that player was the winner" do
+  it 'shows that player was the winner' do
     visit '/'
     choose '3x3'
     click_button('Player')
@@ -78,10 +78,10 @@ RSpec.describe "when player one matches three in a row" do
   end
 end
 
-RSpec.describe "when computer matches three in a row" do
+RSpec.describe 'when computer matches three in a row' do
   capy_app
 
-  it "shows that computer was the winner" do
+  it 'shows that computer was the winner' do
     visit '/'
     choose '3x3'
     click_button('Computer')
@@ -92,16 +92,16 @@ RSpec.describe "when computer matches three in a row" do
   end
 end
 
-RSpec.describe "when there is a winner", :js => true do
+RSpec.describe 'when there is a winner', js: true do
   capy_app
 
-  it "disables the buttons" do
+  it 'disables the buttons' do
     visit '/'
     choose '3x3'
     click_button('Computer')
     click_button('1')
     click_button('2')
     click_button('4')
-    expect(page).to have_css("#cell9[disabled]")
+    expect(page).to have_css('#cell9[disabled]')
   end
 end

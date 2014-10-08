@@ -37,7 +37,7 @@ class ComputerAI
       [[1, 9], [3, 7]] => 2,
       [[1, 8]] => 4
     }
-    blockings.select do |moves, block| 
+    blockings.select do |moves, _block|
       moves.include?(opponent_moves)
     end.values.first || :none
   end

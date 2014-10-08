@@ -1,7 +1,7 @@
 require 'rspec'
 require 'capybara'
 require 'capybara/rspec'
-require File.expand_path '../../tictactoe.rb', __FILE__
+# require File.expand_path '../../tictactoe.rb', __FILE__
 
 module RSpecMixin
   include Rack::Test::Methods

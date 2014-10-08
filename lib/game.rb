@@ -2,7 +2,7 @@
 
 class Game
   attr_reader :board, :current_player
-  
+
   def initialize(board, player_one, player_two)
     @board = board
     @player_one = player_one
@@ -14,7 +14,7 @@ class Game
   def next_move(args)
     @board.set_position(@current_player.get_move(args), @current_player.letter)
   end
-  
+
   def toggle_players
     @current_player = (@player_collection - [@current_player]).shift
   end

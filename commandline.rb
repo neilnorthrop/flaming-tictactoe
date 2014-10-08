@@ -40,7 +40,7 @@ EOF
   if response == 1
     @player_two = Player.new(ComputerMover.new(@board, @player_one.letter), 'O')
   elsif response == 2
-    @player_two = Player.new(ConsoleMover.new($stdin), 'O');
+    @player_two = Player.new(ConsoleMover.new($stdin), 'O')
   else
     setup_players
   end
@@ -67,20 +67,20 @@ def play_again?
   print <<-EOF
 Do you want to play again?
 1 - Yes
-2 - No  
+2 - No
 EOF
   answer = gets.chomp
   if answer.to_i == 1
     enter_game
   else
-    puts "Too baddie..."
+    puts 'Too baddie...'
     exit
   end
 end
 
 def display(board)
   print `clear`
-  board.board.map {|num| "%2s" % num }.each_slice(board.board_dimension) { |row| print row, "\n" }
+  board.board.map { |num| '%2s' % num }.each_slice(board.board_dimension) { |row| print row, "\n" }
 end
 
 enter_game
