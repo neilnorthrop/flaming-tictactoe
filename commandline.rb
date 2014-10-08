@@ -30,7 +30,7 @@ EOF
 end
 
 def setup_players
-  @player_one = Player.new(ConsoleMover.new($stdin), "X")
+  @player_one = Player.new(ConsoleMover.new($stdin), 'X')
   print `clear` + <<-EOF
 Do you want to play a computer or player?
 1 - Computer
@@ -38,9 +38,9 @@ Do you want to play a computer or player?
 EOF
   response = gets.chomp.to_i
   if response == 1
-    @player_two = Player.new(ComputerMover.new(@board, @player_one.letter), "O")
+    @player_two = Player.new(ComputerMover.new(@board, @player_one.letter), 'O')
   elsif response == 2
-    @player_two = Player.new(ConsoleMover.new($stdin), "O");
+    @player_two = Player.new(ConsoleMover.new($stdin), 'O');
   else
     setup_players
   end

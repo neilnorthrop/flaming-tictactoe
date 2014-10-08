@@ -106,25 +106,3 @@ RSpec.describe "when there is a winner", :js => true do
 		expect(page).to have_css("#cell9[disabled]")
 	end
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

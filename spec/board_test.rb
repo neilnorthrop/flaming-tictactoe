@@ -166,4 +166,3 @@ class TestBoard < Minitest::Test
     assert_equal :computer, @board.check_game
   end
 end
-
