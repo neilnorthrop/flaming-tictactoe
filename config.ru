@@ -1,3 +1,3 @@
-require './tictactoe'
+require './lib/tictactoe'
 
 run Sinatra::Application

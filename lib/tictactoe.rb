@@ -6,6 +6,7 @@ require './lib/board.rb'
 require './lib/board4x4.rb'
 require './lib/computer_ai.rb'
 
+set :root, File.dirname("../")
 enable :sessions
 set :session_secret, 'So0perSeKr3t!'
 
